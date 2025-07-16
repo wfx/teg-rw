@@ -1,0 +1,16 @@
+```gitignore
+# Rust build artifacts
+/target/
+**/*.ron.bak
+**/*.rs.bk
+*.tmp
+*~
+
+# IDEs and tools
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Cargo specific
+Cargo.lock

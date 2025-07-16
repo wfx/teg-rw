@@ -1,4 +1,5 @@
 use crate::field::{FieldId, FieldStructure};
+use ron::ser::to_string_pretty;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
@@ -62,7 +63,7 @@ impl GameState {
 
     /// Save the current game state to a file in RON format.
     pub fn save_to_file(&self, path: &str) -> Result<(), std::io::Error> {
-        let ron = ron::to_string_pretty(self, ron::ser::PrettyConfig::default())
+        let ron = to_string_pretty(self, ron::ser::PrettyConfig::default())
             .expect("Failed to serialize game state");
         let mut file = File::create(path)?;
         file.write_all(ron.as_bytes())?;
