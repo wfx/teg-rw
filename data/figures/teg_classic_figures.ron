@@ -1,0 +1,53 @@
+(
+    name: "TEG Classic Chips",
+    boxes: [
+        (
+            name: "Green",
+            pieces: [
+                (value: 1, image: "figures/player_1_piece_1.png"),
+                (value: 5, image: "figures/player_1_piece_5.png"),
+                (value: 10, image: "figures/player_1_piece_10.png"),
+            ]
+        ),
+        (
+            name: "Blue",
+            pieces: [
+                (value: 1, image: "figures/player_2_piece_1.png"),
+                (value: 5, image: "figures/player_2_piece_5.png"),
+                (value: 10, image: "figures/player_2_piece_10.png"),
+            ]
+        ),
+        (
+            name: "Red",
+            pieces: [
+                (value: 1, image: "figures/player_3_piece_1.png"),
+                (value: 5, image: "figures/player_3_piece_5.png"),
+                (value: 10, image: "figures/player_3_piece_10.png"),
+            ]
+        ),
+        (
+            name: "Yellow",
+            pieces: [
+                (value: 1, image: "figures/player_4_piece_1.png"),
+                (value: 5, image: "figures/player_4_piece_5.png"),
+                (value: 10, image: "figures/player_4_piece_10.png"),
+            ]
+        ),
+        (
+            name: "Purple",
+            pieces: [
+                (value: 1, image: "figures/player_5_piece_1.png"),
+                (value: 5, image: "figures/player_5_piece_5.png"),
+                (value: 10, image: "figures/player_5_piece_10.png"),
+            ]
+        ),
+        (
+            name: "Cyan",
+            pieces: [
+                (value: 1, image: "figures/player_6_piece_1.png"),
+                (value: 5, image: "figures/player_6_piece_5.png"),
+                (value: 10, image: "figures/player_6_piece_10.png"),
+            ]
+        )
+    ]
+)
