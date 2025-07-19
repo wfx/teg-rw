@@ -1,0 +1,43 @@
+// TEG Classic Game Mode – Meta definition using named rule, board, and figure definitions
+// References are resolved by matching the `name` field inside each referenced .ron file
+
+(
+    name: "TEG Classic",
+
+    // Named references to definitions in respective folders
+    ruleset: "TEG Classic",
+    boards: ["TEG Classic"],
+    figures: ["TEG Classic Chips"],
+
+    parameters: (
+        // Player constraints
+        min_players: 2,               // Minimum number of players supported
+        max_players: 6,               // Maximum number of players supported
+
+        // Named groups of fields used in the board definition
+        fieldsets_bonus: (
+          fieldsets: {
+              "South America": 3,
+              "North America": 5,
+              "Europe": 5,
+              "Asia": 7,
+              "Africa": 3,
+              "Oceania": 2
+          },
+          control_bonus: "trun"  // once, turn whether sets_bonus applies
+        ),
+
+        placement: (
+            setup_round_figures: 5,     // figures per player in first placement round
+            regular_round_figures: 3,   / figures per player in second placement round
+            fieldsets_bonus: true       // whether zone_bonus applies during placement
+        ),
+
+        // Bonus figure gain by trading cards
+        card_bonus_sequence: [4, 7, 10, 15, 20], // Fixed values for first N trades
+        card_bonus_increment_after: (
+            start_index: 5,          // After 5th trade, use increment
+            increment: 5             // +5 figures per further trade
+        )
+    )
+)
