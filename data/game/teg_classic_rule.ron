@@ -16,195 +16,197 @@
 // - end_phase: complete current player's turn
 
 (
-    default_phase: "setup_start",
+  id: "tcr",
+  name: "TEG Classic ",
+  default_phase: "setup_start",
 
-    phases: {
-        // Phase: setup_start
-        // Description: Assign all fields randomly to players
-        // Action: assign_fields
-        // Result: "ok" → "setup_goals"
-        "setup_start": {
-            assign_fields: { result: { "ok": "setup_goals" } },
-        },
+  phases: {
+      // Phase: setup_start
+      // Description: Assign all fields randomly to players
+      // Action: assign_fields
+      // Result: "ok" → "setup_goals"
+      "setup_start": {
+          assign_fields: { result: { "ok": "setup_goals" } },
+      },
 
-        // Phase: setup_goals
-        // Description: Assign one hidden goal to each player
-        // Action: assign_goals
-        // Result: "ok" → "initial_placement"
-        "setup_goals": {
-            assign_goals: { result: { "ok": "initial_placement" } },
-        },
+      // Phase: setup_goals
+      // Description: Assign one hidden goal to each player
+      // Action: assign_goals
+      // Result: "ok" → "initial_placement"
+      "setup_goals": {
+          assign_goals: { result: { "ok": "initial_placement" } },
+      },
 
-        // Phase: initial_placement
-        // Description: Each player places one figure on a field they own
-        // Action: place_figure
-        // Result: "next" → stay in initial_placement until initial_done is called
-        // Constraints:
-        //   - total_per_player (number): Max number of figures per player in this phase
-        "initial_placement": {
-            place_figure: {
-                result: { "next": "initial_placement" },
-                constraints: {
-                    total_per_player: 8
-                },
-            },
-            initial_done: { result: { "ok": "start_phase" } },
-        },
+      // Phase: initial_placement
+      // Description: Each player places one figure on a field they own
+      // Action: place_figure
+      // Result: "next" → stay in initial_placement until initial_done is called
+      // Constraints:
+      //   - total_per_player (number): Max number of figures per player in this phase
+      "initial_placement": {
+          place_figure: {
+              result: { "next": "initial_placement" },
+              constraints: {
+                  total_per_player: 8
+              },
+          },
+          initial_done: { result: { "ok": "start_phase" } },
+      },
 
-        // Phase: start_phase
-        // Description: Determine how many figures the player receives this turn
-        // Action: calculate_gain
-        // Result: "ok" → "gain"
-        "start_phase": {
-            calculate_gain: { result: { "ok": "gain" } },
-        },
+      // Phase: start_phase
+      // Description: Determine how many figures the player receives this turn
+      // Action: calculate_gain
+      // Result: "ok" → "gain"
+      "start_phase": {
+          calculate_gain: { result: { "ok": "gain" } },
+      },
 
-        // Phase: gain
-        // Description: Place newly gained figures on owned fields
-        // Action: gain_figures
-        // Result: "placed" → "encounter"
-        // Constraints:
-        //   - from_fields (true/false): Gain based on number of fields
-        //   - from_zones (true/false): Gain based on full zone control
-        //   - from_cards (true/false): Gain based on card exchanges
-        "gain": {
-            gain_figures: {
-                result: { "placed": "encounter" },
-                constraints: {
-                    from_fields: true,
-                    from_zones: true,
-                    from_cards: true
-                }
-            },
-        },
+      // Phase: gain
+      // Description: Place newly gained figures on owned fields
+      // Action: gain_figures
+      // Result: "placed" → "encounter"
+      // Constraints:
+      //   - from_fields (true/false): Gain based on number of fields
+      //   - from_zones (true/false): Gain based on full zone control
+      //   - from_cards (true/false): Gain based on card exchanges
+      "gain": {
+          gain_figures: {
+              result: { "placed": "encounter" },
+              constraints: {
+                  from_fields: true,
+                  from_zones: true,
+                  from_cards: true
+              }
+          },
+      },
 
-        // Phase: encounter
-        // Description: Interact with a neighboring field (e.g. combat)
-        // Action: encounter
-        // Result:
-        //   - "won" → "change_ownership"
-        //   - "lost" → "encounter"
-        //   - "continue" → "encounter"
-        // Constraints:
-        //   - min_origin_figures (number): Minimum 2 figures to initiate
-        //   - max_dice (number): Limit number of resolution dice
-        //   - adjacency_required (true/false): Only adjacent fields allowed
-        "encounter": {
-            encounter: {
-                result: {
-                    "won": "change_ownership",
-                    "lost": "encounter",
-                    "continue": "encounter"
-                },
-                constraints: {
-                    min_origin_figures: 2,
-                    max_dice: 3,
-                    adjacency_required: true
-                }
-            },
-            end_encounter: { result: { "ok": "redistribute" } },
-        },
+      // Phase: encounter
+      // Description: Interact with a neighboring field (e.g. combat)
+      // Action: encounter
+      // Result:
+      //   - "won" → "change_ownership"
+      //   - "lost" → "encounter"
+      //   - "continue" → "encounter"
+      // Constraints:
+      //   - min_origin_figures (number): Minimum 2 figures to initiate
+      //   - max_dice (number): Limit number of resolution dice
+      //   - adjacency_required (true/false): Only adjacent fields allowed
+      "encounter": {
+          encounter: {
+              result: {
+                  "won": "change_ownership",
+                  "lost": "encounter",
+                  "continue": "encounter"
+              },
+              constraints: {
+                  min_origin_figures: 2,
+                  max_dice: 3,
+                  adjacency_required: true
+              }
+          },
+          end_encounter: { result: { "ok": "redistribute" } },
+      },
 
-        // Phase: change_ownership
-        // Description: Transfer ownership of a field and move figures into it
-        // Action: change_ownership
-        // Result: "ok" → back to "encounter"
-        // Constraints:
-        //   - min_move (number): At least one figure must move
-        //   - max_move (number): Maximum number of figures that may move
-        "change_ownership": {
-            change_ownership: {
-                result: { "ok": "encounter" },
-                constraints: {
-                    min_move: 1,
-                    max_move: 3
-                },
-            },
-        },
+      // Phase: change_ownership
+      // Description: Transfer ownership of a field and move figures into it
+      // Action: change_ownership
+      // Result: "ok" → back to "encounter"
+      // Constraints:
+      //   - min_move (number): At least one figure must move
+      //   - max_move (number): Maximum number of figures that may move
+      "change_ownership": {
+          change_ownership: {
+              result: { "ok": "encounter" },
+              constraints: {
+                  min_move: 1,
+                  max_move: 3
+              },
+          },
+      },
 
-        // Phase: redistribute
-        // Description: Move figures between owned adjacent fields
-        // Action: redistribute_figures
-        // Result:
-        //   - "moved" → stay in "redistribute"
-        //   - "done" → proceed to "check_card_eligibility"
-        // Constraints:
-        //   - min_leave (number): At least one figure must stay behind
-        //   - only_adjacent (true/false): Movement only between adjacent fields
-        "redistribute": {
-            redistribute_figures: {
-                result: { "moved": "redistribute", "done": "check_card_eligibility" },
-                constraints: {
-                    min_leave: 1,
-                    only_adjacent: true
-                }
-            },
-        },
+      // Phase: redistribute
+      // Description: Move figures between owned adjacent fields
+      // Action: redistribute_figures
+      // Result:
+      //   - "moved" → stay in "redistribute"
+      //   - "done" → proceed to "check_card_eligibility"
+      // Constraints:
+      //   - min_leave (number): At least one figure must stay behind
+      //   - only_adjacent (true/false): Movement only between adjacent fields
+      "redistribute": {
+          redistribute_figures: {
+              result: { "moved": "redistribute", "done": "check_card_eligibility" },
+              constraints: {
+                  min_leave: 1,
+                  only_adjacent: true
+              }
+          },
+      },
 
-        // Phase: check_card_eligibility
-        // Description: Check if the player is allowed to draw a card
-        // Action: check_card_reward
-        // Result:
-        //   - "eligible" → draw_field_card
-        //   - "ineligible" → end_phase
-        // Constraints:
-        //   - encounter_required (true/false): Must have completed at least one encounter this turn
-        //   - encounter_threshold (number): Extra condition for minimum number of encounters
-        "check_card_eligibility": {
-            check_card_reward: {
-                result: {
-                    "eligible": "draw_field_card",
-                    "ineligible": "end_phase"
-                },
-                constraints: {
-                    encounter_required: true,
-                    encounter_threshold: 2
-                }
-            },
-        },
+      // Phase: check_card_eligibility
+      // Description: Check if the player is allowed to draw a card
+      // Action: check_card_reward
+      // Result:
+      //   - "eligible" → draw_field_card
+      //   - "ineligible" → end_phase
+      // Constraints:
+      //   - encounter_required (true/false): Must have completed at least one encounter this turn
+      //   - encounter_threshold (number): Extra condition for minimum number of encounters
+      "check_card_eligibility": {
+          check_card_reward: {
+              result: {
+                  "eligible": "draw_field_card",
+                  "ineligible": "end_phase"
+              },
+              constraints: {
+                  encounter_required: true,
+                  encounter_threshold: 2
+              }
+          },
+      },
 
-        // Phase: draw_field_card
-        // Description: Draw one field card for the player
-        // Action: draw_field_card
-        // Result: "ok" → "end_phase"
-        "draw_field_card": {
-            draw_field_card: { result: { "ok": "end_phase" } }
-        },
+      // Phase: draw_field_card
+      // Description: Draw one field card for the player
+      // Action: draw_field_card
+      // Result: "ok" → "end_phase"
+      "draw_field_card": {
+          draw_field_card: { result: { "ok": "end_phase" } }
+      },
 
-        // Phase: end_phase
-        // Description: Ends current player's turn and passes to next
-        // Action: end_phase
-        // Result: "next_player" → back to start_phase
-        "end_phase": {
-            end_phase: { result: { "next_player": "start_phase" } }
-        }
-    },
+      // Phase: end_phase
+      // Description: Ends current player's turn and passes to next
+      // Action: end_phase
+      // Result: "next_player" → back to start_phase
+      "end_phase": {
+          end_phase: { result: { "next_player": "start_phase" } }
+      }
+  },
 
-    goals: [
-        (
-            name: "Get ownership of Africa",
-            type: "control_sets",
-            sets: ["Africa"],
-            min_total_figures: 9
-        ),
-        (
-            name: "Get ownership of Asia and South America",
-            type: "control_sets",
-            sets: ["Asia", "South America"]
-        ),
-        (
-            name: "Remove player 1",
-            type: "remove_player",
-            target_player: 1,
-            fallback_goal: (
-                type: "control_total",
-                field_count: 30
-            )
-        ),
-        (
-            name: "Control total fields",
+  goals: [
+    (
+        name: "Get ownership of Africa",
+        type: "control_sets",
+        sets: ["Africa"],
+        min_total_figures: 9
+    ),
+    (
+        name: "Get ownership of Asia and South America",
+        type: "control_sets",
+        sets: ["Asia", "South America"]
+    ),
+    (
+        name: "Remove player 1",
+        type: "remove_player",
+        target_player: 1,
+        fallback_goal: (
             type: "control_total",
             field_count: 30
         )
-    ]
+    ),
+    (
+        name: "Control total fields",
+        type: "control_total",
+        field_count: 30
+    )
+  ]
 )

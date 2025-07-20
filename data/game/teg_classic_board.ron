@@ -1,4 +1,5 @@
 FieldStructure(
+  id: "tcb",
   name: "TEG Classic Board",
   elements: {
       FieldElement(
