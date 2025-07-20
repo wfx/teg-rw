@@ -2,6 +2,7 @@
 // References are resolved by matching the `name` field inside each referenced .ron file
 
 (
+    id: "tcg"
     name: "TEG Classic",
 
     // Named references to definitions in respective folders
