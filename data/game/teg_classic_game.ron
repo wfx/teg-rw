@@ -5,9 +5,9 @@
     name: "TEG Classic",
 
     // Named references to definitions in respective folders
-    ruleset: "TEG Classic",
-    boards: ["TEG Classic"],
-    figures: ["TEG Classic Chips"],
+    ruleset: "tcr",
+    boards: ["tcb"],
+    pieces: ["tcp"],
 
     parameters: (
         // Player constraints
