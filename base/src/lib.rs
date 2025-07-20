@@ -1,4 +1,5 @@
 pub mod events;
-pub mod field;
-pub mod figures;
-pub mod state;
+pub mod board;
+pub mod piece;
+pub mod rules;
+pup mod game;
