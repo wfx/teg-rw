@@ -1,4 +1,4 @@
-use crate::field::FieldId;
+use crate::board::FieldId;
 
 /// A turn-based action initiated by a participant.
 /// This enum describes all possible interactions with the game board,

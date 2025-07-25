@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::{collections::{HashSet}, fs, path::Path};
+use std::{collections::HashSet, fs, path::Path};
 use thiserror::Error;
 
 /// Unique identifier for a field (tile) on the board.
@@ -47,7 +47,7 @@ pub enum DataError {
     #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
     #[error("RON parse error: {0}")]
-    Ron(#[from] ron::Error),
+    Ron(#[from] ron::error::SpannedError),
     #[error("Validation error: {0}")]
     Validation(String),
 }
@@ -110,4 +110,3 @@ impl FieldStructure {
         Ok(())
     }
 }
-

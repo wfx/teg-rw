@@ -26,10 +26,10 @@ pub struct GameData {
 /// Lade eine gesamte Variante (z.B. "classic") aus RON-Dateien.
 /// Erwartet Dateien im Format: `<variant>.board.ron`, `<variant>.pieces.ron`, etc.
 pub fn load_variant(variant: &str, dir: &Path) -> Result<GameData, DataError> {
-    let board = board::load(&dir.join(format!("{}.board.ron", variant)))?;
-    let pieces = piece::load(&dir.join(format!("{}.pieces.ron", variant)))?;
-    let game = game::load(&dir.join(format!("{}.game.ron", variant)))?;
-    let rules = rule::load(&dir.join(format!("{}.rule.ron", variant)))?;
+    let board = board::FieldStructure::load(&dir.join(format!("{}.board.ron", variant)))?;
+    let pieces = piece::PieceStructure::load(&dir.join(format!("{}.pieces.ron", variant)))?;
+    let game = game::GameMeta::load(&dir.join(format!("{}.game.ron", variant)))?;
+    let rules = rule::RuleSet::load(&dir.join(format!("{}.rule.ron", variant)))?;
     Ok(GameData {
         board,
         pieces,

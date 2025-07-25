@@ -8,7 +8,7 @@ pub enum DataError {
     #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
     #[error("RON parse error: {0}")]
-    Ron(#[from] ron::Error),
+    Ron(#[from] ron::error::SpannedError),
     #[error("Validation error: {0}")]
     Validation(String),
 }
@@ -53,12 +53,14 @@ impl PieceStructure {
         for set in &self.sets {
             if !seen_sets.insert(&set.name) {
                 return Err(DataError::Validation(format!(
-                    "Duplicate piece set name: {}", set.name
+                    "Duplicate piece set name: {}",
+                    set.name
                 )));
             }
             if set.pieces.is_empty() {
                 return Err(DataError::Validation(format!(
-                    "Piece set '{}' must contain at least one piece", set.name
+                    "Piece set '{}' must contain at least one piece",
+                    set.name
                 )));
             }
         }

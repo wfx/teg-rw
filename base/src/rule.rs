@@ -8,7 +8,7 @@ pub enum DataError {
     #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
     #[error("RON parse error: {0}")]
-    Ron(#[from] ron::Error),
+    Ron(#[from] ron::error::SpannedError),
     #[error("Validation error: {0}")]
     Validation(String),
 }
@@ -43,27 +43,27 @@ pub struct ActionDefinition {
     /// Constraints that must be satisfied to perform the action.
     #[serde(default)]
     pub constraints: Vec<Constraint>,
-    /// Resulting state changes when the action is executed.
+    // Resulting state changes when the action is executed.
     #[serde(default)]
     pub result: ActionResult,
 }
 
 /// A constraint on an action (field condition, minimum value, etc.).
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Constraint {
     pub field: String,
-    pub value: serde_json::Value,
+    pub value: ron::Value,
 }
 
 /// The result of an action, consisting of state changes.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub struct ActionResult {
     #[serde(rename = "changes")]
     pub state_changes: Vec<StateChange>,
 }
 
 /// Possible state changes triggered by an action.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "data")]
 pub enum StateChange {
     MoveFigures {

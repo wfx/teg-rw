@@ -8,7 +8,7 @@ pub enum DataError {
     #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
     #[error("RON parse error: {0}")]
-    Ron(#[from] ron::Error),
+    Ron(#[from] ron::error::SpannedError),
     #[error("Validation error: {0}")]
     Validation(String),
 }
@@ -52,7 +52,8 @@ impl GameMeta {
         for player in &self.players {
             if !seen_ids.insert(player.id) {
                 return Err(DataError::Validation(format!(
-                    "Duplicate player id: {}", player.id
+                    "Duplicate player id: {}",
+                    player.id
                 )));
             }
         }
@@ -61,7 +62,8 @@ impl GameMeta {
         for goal in &self.goals {
             if !seen_goals.insert(goal.id) {
                 return Err(DataError::Validation(format!(
-                    "Duplicate goal id: {}", goal.id
+                    "Duplicate goal id: {}",
+                    goal.id
                 )));
             }
         }
@@ -70,7 +72,8 @@ impl GameMeta {
             if let Some(gid) = player.goal_id {
                 if !seen_goals.contains(&gid) {
                     return Err(DataError::Validation(format!(
-                        "Player {} references unknown goal id: {}", player.id, gid
+                        "Player {} references unknown goal id: {}",
+                        player.id, gid
                     )));
                 }
             }
@@ -78,4 +81,3 @@ impl GameMeta {
         Ok(())
     }
 }
-
