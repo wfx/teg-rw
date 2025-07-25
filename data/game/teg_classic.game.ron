@@ -1,14 +1,14 @@
 // TEG Classic Game Mode – Meta definition using named rule, board, and figure definitions
 // References are resolved by matching the `name` field inside each referenced .ron file
-
+// Each game definition is selectable, per default is the first board and piece option chosen.
 (
     id: "tcg"
     name: "TEG Classic",
 
-    // Named references to definitions in respective folders
-    ruleset: "tcr",
-    boards: ["tcb"],
-    pieces: ["tcp"],
+    // Filename in respective folders
+    rule: "teg_classic_rule",
+    boards: ["teg_classic_board"],
+    pieces: ["teg_classic_pieces"],
 
     parameters: (
         // Player constraints
