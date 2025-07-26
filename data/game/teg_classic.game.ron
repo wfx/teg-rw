@@ -6,10 +6,11 @@
     name: "TEG Classic",
 
     // Filename in respective folders
-    rule: "teg_classic_rule",
-    boards: ["teg_classic_board"],
-    pieces: ["teg_classic_pieces"],
-
+    rule: "teg_classic.rule",
+    boards: "teg_classic.board",
+    cards: "teg_classic.cards",
+    pieces: "teg_classic.pieces",
+    encounter: "teg_classic.encounter", /// Dices or whatever.
     parameters: (
         // Player constraints
         min_players: 2,               // Minimum number of players supported
@@ -17,14 +18,14 @@
 
         // Named groups of fields used in the board definition
         fieldsets_bonus: (
-          fieldsets: {
-              "South America": 3,
-              "North America": 5,
-              "Europe": 5,
-              "Asia": 7,
-              "Africa": 3,
-              "Oceania": 2
-          },
+          // fieldsets: {
+          //     "South America": 3,
+          //     "North America": 5,
+          //     "Europe": 5,
+          //     "Asia": 7,
+          //     "Africa": 3,
+          //     "Oceania": 2
+          // },
           control_bonus: "trun"  // once, turn whether sets_bonus applies
         ),
 
@@ -35,10 +36,10 @@
         ),
 
         // Bonus figure gain by trading cards
-        card_bonus_sequence: [4, 7, 10, 15, 20], // Fixed values for first N trades
-        card_bonus_increment_after: (
-            start_index: 5,          // After 5th trade, use increment
-            increment: 5             // +5 figures per further trade
-        )
+        card_bonus_sequence: [4, 7, 10, 15], // Amount of every next Trade is LastTrade-PreviousTrade
+        // card_bonus_increment_after: (
+        //     start_index: 5,          // After 5th trade, use increment
+        //     increment: 5             // +5 figures per further trade
+        // )
     )
 )
