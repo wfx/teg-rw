@@ -3,41 +3,43 @@ use std::{collections::HashSet, fs, path::Path};
 use thiserror::Error;
 
 /// Unique identifier for a field (tile) on the board.
-pub type FieldId = u32;
+pub type FieldId = u8;
 
 /// Unique identifier for a group of fields (e.g., a continent).
-pub type FieldSetId = u32;
+pub type FieldSetId = u8;
 
 /// Represents a single field (tile) on the game board.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct FieldElement {
     pub id: FieldId,
     pub name: String,
     pub set_id: FieldSetId,
-    pub position: (f32, f32),
+    pub position: (u16, u16),
+    pub piece_pos: (u16, u16),
+    pub filename: String,
 }
 
 /// Represents a logical grouping of fields (e.g., continent).
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct FieldSet {
     pub id: FieldSetId,
     pub name: String,
-    pub bonus: Option<u32>,
-    pub color: Option<String>,
+    pub bonus: u8,
+    pub color: (u8, u8, u8),
 }
 
 /// Represents an adjacency between two fields.
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct FieldRelation {
-    pub from: FieldId,
-    pub to: FieldId,
-}
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct FieldRelation(pub FieldId, pub FieldId);
 
 /// Top-level board structure with elements, sets, and relations.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct FieldStructure {
-    pub fields: Vec<FieldElement>,
-    pub sets: Vec<FieldSet>,
+    pub id: String,
+    pub name: String,
+    pub folder: String,
+    pub fields: HashSet<FieldElement>,
+    pub sets: HashSet<FieldSet>,
     pub relations: Vec<FieldRelation>,
 }
 
@@ -92,17 +94,17 @@ impl FieldStructure {
         }
 
         // Check relations refer to existing fields
-        for rel in &self.relations {
-            if !seen_fields.contains(&rel.from) {
+        for &FieldRelation(from, to) in &self.relations {
+            if !seen_fields.contains(&from) {
                 return Err(DataError::Validation(format!(
                     "Relation from unknown field id: {}",
-                    rel.from
+                    from
                 )));
             }
-            if !seen_fields.contains(&rel.to) {
+            if !seen_fields.contains(&to) {
                 return Err(DataError::Validation(format!(
                     "Relation to unknown field id: {}",
-                    rel.to
+                    to
                 )));
             }
         }
