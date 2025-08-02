@@ -1,17 +1,8 @@
+use crate::DataError;
+use crate::Validatable;
 use serde::{Deserialize, Serialize};
-use std::{collections::HashSet, fs, path::Path};
-use thiserror::Error;
-
-/// Errors that can occur loading or validating rule data.
-#[derive(Debug, Error)]
-pub enum DataError {
-    #[error("IO error: {0}")]
-    Io(#[from] std::io::Error),
-    #[error("RON parse error: {0}")]
-    Ron(#[from] ron::error::SpannedError),
-    #[error("Validation error: {0}")]
-    Validation(String),
-}
+use std::collections::HashSet;
+//use thiserror::Error;
 
 /// Top-level rule set definition.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -78,22 +69,13 @@ pub enum StateChange {
     // TODO: weitere StateChanges ergänzen
 }
 
-impl RuleSet {
-    /// Load rule set from a .ron file, parse and validate.
-    pub fn load(path: &Path) -> Result<Self, DataError> {
-        let raw = fs::read_to_string(path)?;
-        let ruleset: RuleSet = ron::from_str(&raw)?;
-        ruleset.validate()?;
-        Ok(ruleset)
-    }
-
+impl Validatable for RuleSet {
     /// Validate uniqueness and consistency of the rule set.
-    pub fn validate(&self) -> Result<(), DataError> {
-        // Ensure unique rule set id
+    fn validate(&self) -> Result<(), DataError> {
         if self.id.trim().is_empty() {
             return Err(DataError::Validation("RuleSet id must not be empty".into()));
         }
-        // Unique phase ids
+
         let mut seen = HashSet::new();
         for phase in &self.phases {
             if !seen.insert(&phase.id) {
@@ -103,7 +85,7 @@ impl RuleSet {
                 )));
             }
         }
-        // Validate next_phase references
+
         for phase in &self.phases {
             if let Some(ref np) = phase.next_phase {
                 if !seen.contains(np) {
@@ -113,7 +95,117 @@ impl RuleSet {
                     )));
                 }
             }
+
+            for action in &phase.actions {
+                // Prüfe, ob "kind" zulässig ist (Whitelist)
+                let allowed = [
+                    "assign_fields",
+                    "assign_goals",
+                    "place_figure",
+                    "calculate_gain",
+                    "gain_figures",
+                    "encounter",
+                    "change_ownership",
+                    "redistribute_figures",
+                    "check_card_reward",
+                    "draw_field_card",
+                    "end_phase",
+                ];
+                if !allowed.contains(&action.kind.as_str()) {
+                    return Err(DataError::Validation(format!(
+                        "Invalid action kind in phase '{}': '{}'",
+                        phase.id, action.kind
+                    )));
+                }
+
+                // Optionale Prüfung der Constraints
+                for constraint in &action.constraints {
+                    if constraint.field.trim().is_empty() {
+                        return Err(DataError::Validation(format!(
+                            "Empty constraint field in action '{}'",
+                            action.kind
+                        )));
+                    }
+                    // Optional: type check for constraint.value?
+                }
+
+                // Prüfe Result-Änderungen
+                for change in &action.result.state_changes {
+                    match change {
+                        StateChange::MoveFigures { from, to, count } => {
+                            if from == to {
+                                return Err(DataError::Validation(
+                                    "MoveFigures: from and to must differ".into(),
+                                ));
+                            }
+                            if *count == 0 {
+                                return Err(DataError::Validation(
+                                    "MoveFigures: count must be > 0".into(),
+                                ));
+                            }
+                        }
+                        StateChange::ChangeOwner {
+                            field_id,
+                            new_owner,
+                        } => {
+                            if field_id.trim().is_empty() || new_owner.trim().is_empty() {
+                                return Err(DataError::Validation(
+                                    "ChangeOwner: field_id and new_owner must be set".into(),
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
         }
+
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod test_rule {
+    use super::*;
+    use crate::loader::load_ron;
+    use std::fs;
+    use std::path::Path;
+    use std::path::PathBuf;
+
+    #[test]
+    fn validate_all_rule_files() {
+        //let dir = "wad/game";
+        let manifest = env!("CARGO_MANIFEST_DIR");
+        let dir: PathBuf = Path::new(manifest).join("..").join("wad").join("game");
+
+        assert!(
+            dir.exists(),
+            "wad/game directory does not exist: {}",
+            dir.display()
+        );
+
+        let mut failed = vec![];
+
+        for entry in fs::read_dir(dir).expect("Failed to read wad/game directory") {
+            let entry = entry.expect("Invalid dir entry");
+            let path = entry.path();
+
+            if path.extension().map_or(false, |ext| ext == "ron")
+                && path
+                    .file_name()
+                    .map_or(false, |name| name.to_string_lossy().ends_with(".rule.ron"))
+            {
+                match load_ron::<RuleSet, _>(&path) {
+                    Ok(_) => { /* success */ }
+                    Err(e) => failed.push((path.display().to_string(), e.to_string())),
+                }
+            }
+        }
+
+        if !failed.is_empty() {
+            for (file, err) in &failed {
+                eprintln!("❌ Validation failed for {}:\n{}", file, err);
+            }
+            panic!("{} rule file(s) failed validation", failed.len());
+        }
     }
 }

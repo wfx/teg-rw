@@ -5,26 +5,16 @@
 
 **teg-rs** is a complete rewrite of the classic [TEG game](https://github.com/wfx/teg) in Rust.
 
-"If I end up finishing this as a chaotic, stage-based system, it will replace TEG LS." :)
+"If I end up finishing this as a chaotic, stage-based system, it will replace TEG LS."
 
 The goal is to create a clean, modern, and modular system for turn-based strategy games with customizable rulesets and board definitions.
 
 ## Features
 
 - Flexible board structures loaded from RON files
-- Planned support for different rulesets (TEG, Risk, custom)
+- Planned support for different rulesets (TEG, Risk like, custom)
 - Support for TUI and GUI frontends
 - Optional networked multiplayer
-
-## Project structure
-
-```text
-base/     ← Core logic (field structure, game state, turn events)
-ui/       ← User interfaces (tui and gui)
-net/      ← Networking components
-data/     ← Boards and related assets
-rules/    ← Ruleset definitions and implementations
-```
 
 ## License ##
 

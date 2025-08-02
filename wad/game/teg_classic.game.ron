@@ -1,0 +1,41 @@
+// Game – Meta definition using named rule, board, cards, pieces, and encounter definitions
+// References are resolved by matching the `id` and `filename` inside each referenced .ron file
+// Each game definition is selectable, per default is the first board and piece option chosen.
+(
+    id: "tcg",
+    name: "TEG Classic",
+
+    // Filename in respective folders
+    rule: "teg_classic.rule",
+    board: "teg_classic.board",
+    cards: "teg_classic.cards",
+    pieces: "teg_classic.pieces",
+    encounter: "teg_classic.encounter", // Dices or whatever.
+    parameters: (
+        // Player constraints
+        min_players: 2,                 // Minimum number of players supported
+        max_players: 6,                 // Maximum number of players supported
+
+        // Named groups of fields used in the board definition
+        // Match the sets 'id' inside *.board.ron
+        fieldsets: [
+          FieldSetBonus(1,3),
+          FieldSetBonus(2,5),
+          FieldSetBonus(3,3),
+          FieldSetBonus(4,2),
+          FieldSetBonus(5,5),
+          FieldSetBonus(6,7),
+        ],
+
+        placement: (
+            setup_round_figures: 5,     // figures per player in first placement round
+            regular_round_figures: 3,   // figures per player in second placement round
+            fieldsets_bonus: true,      // whether zone_bonus applies during placement
+            control_bonus: turn,      // once, turn whether sets_bonus applies
+        ),
+
+        // Bonus figure gain by trading cards
+        // Amount of every next Trade is LastTrade-PreviousTrade
+        card_bonus_sequence: [4, 7, 10, 15],
+    )
+)

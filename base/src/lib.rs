@@ -1,6 +1,9 @@
-pub mod board;
-pub mod data_loader;
-pub mod events;
+pub use error::DataError;
+pub use loader::load_ron;
+pub use validator::{verify_file, Validatable};
+
+pub mod error;
 pub mod game;
-pub mod piece;
+pub mod loader;
 pub mod rule;
+pub mod validator;

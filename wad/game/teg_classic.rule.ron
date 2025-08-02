@@ -183,16 +183,17 @@
   },
 
   goals: [
-    (
-        name: "Get ownership of Africa",
+    (   /// "Africa"
+        name: "Get ownership of {3}",
         type: "control_sets",
-        sets: ["Africa"],
+        sets: [3],
+        /// TODO: sets_rnd(n sets) ?
         min_total_figures: 9
     ),
-    (
-        name: "Get ownership of Asia and South America",
+    (   /// America del Sur and Asia
+        name: "Get ownership of {1} and {2}",
         type: "control_sets",
-        sets: ["Asia", "South America"]
+        sets: [1, 6]
     ),
     (
         name: "Remove player 1",
@@ -207,6 +208,11 @@
         name: "Control total fields",
         type: "control_total",
         field_count: 30
+    ),
+    (
+        name: "Control all Continent's",
+        type: "control_sets",
+        sets: [1, 2, 3, 4, 5, 6]
     )
   ]
 )
