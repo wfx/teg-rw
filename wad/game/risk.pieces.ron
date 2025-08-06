@@ -1,0 +1,63 @@
+(
+  id: "risk"
+  name: "RISK Pieces",
+  author: "Wolfgang Morawetz",
+  version: "1.0",
+  description: "The pieces for playing 'Ricos Ingredientes Sin Kilos'.",
+  sets: [
+    (
+        id: 1
+        name: "Green",
+        pieces: [
+            (value: 1, image: "assets/risk_box_green_piece_I.png"),
+            (value: 5, image: "assets/risk_box_green_piece_V.png"),
+            (value: 10, image: "assets/risk_box_green_piece_X.png"),
+        ],
+    ),
+    (
+        id: 2
+        name: "Blue",
+        pieces: [
+            (value: 1, image: "assets/risk_box_blue_piece_I.png"),
+            (value: 5, image: "assets/risk_box_blue_piece_V.png"),
+            (value: 10, image: "assets/risk_box_blue_piece_X.png"),
+        ],
+    ),
+    (
+        id: 3
+        name: "Red",
+        pieces: [
+            (value: 1, image: "assets/risk_box_red_piece_I.png"),
+            (value: 5, image: "assets/risk_box_red_piece_V.png"),
+            (value: 10, image: "assets/risk_box_red_piece_X.png"),
+        ],
+    ),
+    (
+        id: 4
+        name: "Yellow",
+        pieces: [
+            (value: 1, image: "assets/risk_box_yellow_piece_I.png"),
+            (value: 5, image: "assets/risk_box_yellow_piece_V.png"),
+            (value: 10, image: "assets/risk_box_yellow_piece_X.png"),
+        ],
+    ),
+    (
+        id: 5
+        name: "Purple",
+        pieces: [
+            (value: 1, image: "assets/risk_box_purple_piece_I.png"),
+            (value: 5, image: "assets/risk_box_purple_piece_V.png"),
+            (value: 10, image: "assets/risk_box_purple_piece_X.png"),
+        ],
+    ),
+    (
+        id: 6
+        name: "Cyan",
+        pieces: [
+            (value: 1, image: "assets/risk_box_cyan_piece_I.png"),
+            (value: 5, image: "assets/risk_box_cyan_piece_V.png"),
+            (value: 10, image: "assets/risk_box_cyan_piece_X.png"),
+        ],
+    ),
+  ],
+)

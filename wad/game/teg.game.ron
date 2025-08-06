@@ -1,0 +1,19 @@
+// Game – Meta definition using named rule, board, cards, pieces, and dice definitions
+// References are resolved by matching the `id` and `suffix` inside each referenced .ron file
+
+(
+  id: "teg",
+  name: "TEG",
+  author: "Wolfgang Morawetz",
+  version: "1.0",
+  description: "Tenes Empanadas Graciela.",
+  // - Use `""` for components that follow the same prefix as `id`
+  // - Leave out any unused components entirely
+  // - Prefix related files consistently (`teg.rule`, `teg.board`, …)
+  // - Reuse rules or boards across multiple games where appropriate
+  board: "",
+  cards: "",
+  dices: "",
+  pieces: "",
+  rule: "",
+)

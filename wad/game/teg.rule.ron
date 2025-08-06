@@ -8,19 +8,50 @@
 // - place_figure: place a figure on a given field
 // - calculate_gain: calculate number of figures to be gained (zones, fields, cards)
 // - gain_figures: place gained figures on owned fields
-// - encounter: initiate interaction between two fields (resolution via dice, RPS, etc.)
+// - encounter: initiate interaction between two fields (resolution via dice, SSP, etc.)
 // - change_ownership: transfer control of a field after a successful encounter
 // - redistribute_figures: move figures between owned adjacent fields
 // - check_card_reward: verify if player receives a card for conquest
 // - draw_field_card: receive a random card
 // - end_phase: complete current player's turn
+// - ...
 
 (
-  id: "tcr",
-  name: "TEG Classic ",
-  default_phase: "setup_start",
+  id: "teg",
+  name: "TEG",
+  author: "Wolfgang Morawetz",
+  version: "1.0",
+  description: "The rules for playing Tenes Empanadas Graciela.",
+  rules: "https://wfx.github.io/teg/",
+  parameters: [
+    default_phase: "setup_start",
+    // Player constraints
+    min_players: 2,                 // Minimum number of players supported
+    max_players: 6,                 // Maximum number of players supported
 
-  phases: {
+    // Named groups of fields used in the board definition
+    // Match the sets 'id' inside *.board.ron
+    sets_bonus: [
+      (1,3),
+      (2,5),
+      (3,3),
+      (4,2),
+      (5,5),
+      (6,7),
+    ],
+
+    placement: [
+        setup_round_figures: 5,     // figures per player in first placement round
+        regular_round_figures: 3,   // figures per player in second placement round
+        fieldsets_bonus: true,      // whether zone_bonus applies during placement
+        control_bonus: turn,      // once, turn whether sets_bonus applies
+    ],
+
+    // Bonus figure gain by trading cards
+    // Amount of every next Trade is LastTrade-PreviousTrade
+    card_bonus_sequence: [4, 7, 10, 15],
+  ],
+  phases: [
       // Phase: setup_start
       // Description: Assign all fields randomly to players
       // Action: assign_fields
@@ -180,7 +211,7 @@
       "end_phase": {
           end_phase: { result: { "next_player": "start_phase" } }
       }
-  },
+  ],
 
   goals: [
     (   /// "Africa"
@@ -213,6 +244,6 @@
         name: "Control all Continent's",
         type: "control_sets",
         sets: [1, 2, 3, 4, 5, 6]
-    )
-  ]
+    ),
+  ],
 )

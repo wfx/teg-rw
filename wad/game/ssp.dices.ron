@@ -1,0 +1,34 @@
+(
+  id: "ssp",
+  name: "Stone Scissors Paper",
+  author: "Wolfgang Morawetz",
+  version: "1.0",
+  description: "Rock-Paper-Scissors dice variations.",
+  // A plays against B
+  // Value: 0 = Rock, 1 = Scissors, 2 = Paper
+  // let result = [
+  //     [0,  1, -1], // Rock: draw, wins against Scissors, loses against Paper
+  //     [-1, 0,  1], // Scissors: loses against Rock, draw, wins against Paper
+  //     [1, -1,  0], // Paper: wins against Rock, loses against Scissors, draw
+  // ];
+ dice_sets: [
+    (
+      id: 1,
+      name: "Left",
+      pieces: [
+          (value: 0, image: "assets/dice_lefthand_stone.png"),
+          (value: 1, image: "assets/dice_lefthand_scissors.png"),
+          (value: 2, image: "assets/dice_lefthand_paper.png"),
+      ],
+    ),
+    (
+      id: 2,
+      name: "Right",
+      pieces: [
+          (value: 0, image: "assets/dice_righthand_stone.png"),
+          (value: 1, image: "assets/dice_righthand_scissors.png"),
+          (value: 2, image: "assets/dice_righthand_paper.png"),
+      ],
+    ),
+  ],
+),

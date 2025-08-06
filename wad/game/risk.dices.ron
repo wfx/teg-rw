@@ -1,0 +1,33 @@
+(
+  id: "risk",
+  name: "RISK Dices",
+  author: "Wolfgang Morawetz",
+  version: "1.0",
+  description: "Default dice set for 'Ricos Ingredientes Sin Kilos'",
+  dice_sets: [
+    (
+      id: 1,
+      name: "Red",
+      pieces: [
+        (value: 1, image: "assets/dice_red_face_1.png"),
+        (value: 2, image: "assets/dice_red_face_2.png"),
+        (value: 3, image: "assets/dice_red_face_3.png"),
+        (value: 4, image: "assets/dice_red_face_4.png"),
+        (value: 5, image: "assets/dice_red_face_5.png"),
+        (value: 6, image: "assets/dice_red_face_6.png"),
+      ],
+    ),
+    (
+      id: 2,
+      name: "Blue",
+      pieces: [
+        (value: 1, image: "assets/dice_blue_face_1.png"),
+        (value: 2, image: "assets/dice_blue_face_2.png"),
+        (value: 3, image: "assets/dice_blue_face_3.png"),
+        (value: 4, image: "assets/dice_blue_face_4.png"),
+        (value: 5, image: "assets/dice_blue_face_5.png"),
+        (value: 6, image: "assets/dice_blue_face_6.png"),
+      ],
+    ),
+  ],
+)

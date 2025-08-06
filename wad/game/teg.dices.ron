@@ -1,0 +1,21 @@
+(
+  id: "teg",
+  name: "TEG Dices",
+  author: "Wolfgang Morawetz",
+  version: "1.0",
+  description: "Default dice set for 'Tennes Empanadas Gracielas'",
+  dice_sets: [
+    (
+      id: 1,
+      name: "White",
+      pieces: [
+          (value: 1, image: "assets/dice_white_face_1.png"),
+          (value: 2, image: "assets/dice_white_face_2.png"),
+          (value: 3, image: "assets/dice_white_face_3.png"),
+          (value: 4, image: "assets/dice_white_face_4.png"),
+          (value: 5, image: "assets/dice_white_face_5.png"),
+          (value: 6, image: "assets/dice_white_face_6.png"),
+      ],
+    ),
+  ],
+)
