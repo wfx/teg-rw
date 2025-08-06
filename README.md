@@ -7,7 +7,7 @@
 
 "If I end up finishing this as a chaotic, stage-based system, it will replace TEG LS."
 
-The goal is to create a clean, modern, and modular system for turn-based strategy games with customizable rulesets and board definitions.
+The goal is to create a clean, modern, and modular system for TEG (Tennes Emapandas Graciela), RISK (Ricos Ingredientes Sin Kilos) and custom games with customizable rulesets and board definitions.
 
 ## Features
 

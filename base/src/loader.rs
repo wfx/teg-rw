@@ -4,8 +4,8 @@
 //! and a generic `load_ron` function that reads, parses, and validates
 //! RON data assets.
 
-use crate::error::DataError;
 use crate::validator::{verify_file, Validatable};
+use crate::DataError;
 use serde::de::DeserializeOwned;
 use std::fs::File;
 use std::path::{Path, PathBuf};
