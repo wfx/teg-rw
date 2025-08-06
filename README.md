@@ -3,7 +3,7 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-**teg-rs** is a complete rewrite of the classic [TEG game](https://github.com/wfx/teg) in Rust.
+**teg-rw** is a complete rewrite of the classic [TEG game](https://github.com/wfx/teg) in Rust.
 
 "If I end up finishing this as a chaotic, stage-based system, it will replace TEG LS."
 
