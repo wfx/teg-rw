@@ -1,4 +1,4 @@
-![icon](wad/assets/icon_64.png)Tenes Emapandas Graciela (Rewrite)
+![icon](wad/assets/icon_64.png) Tenes Emapandas Graciela (Rewrite)
 =========================================
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
