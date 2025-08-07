@@ -1,3 +1,8 @@
+[package]
+name = "teg-rw"
+version = "0.1.0"
+edition = "2021"
+
 [workspace]
 members = ["base"]
 
@@ -5,3 +10,6 @@ members = ["base"]
 serde = { version = "1.0", features = ["derive"] }
 ron = "0.9"
 thiserror = "1.0"
+
+[dependencies]
+base = { path = "base" }

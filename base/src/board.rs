@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 /// Top-level structure for board definitions.
 /// Each board contains sets (continents), fields (countries), and relations (borders).
 #[derive(Debug, Serialize, Deserialize)]
-pub struct FieldStructure {
+pub struct Board {
     /// Unique identifier for this board definition.
     pub id: String,
 
@@ -59,4 +59,32 @@ pub struct FieldElement {
 
     /// Optional filename for field artwork (can be empty).
     pub filename: String,
+}
+
+impl crate::validator::Validatable for Board {
+    fn validate(&self) -> Result<(), String> {
+        if self.id.trim().is_empty() {
+            return Err("Board: 'id' must not be empty.".into());
+        }
+        if self.fields.is_empty() {
+            return Err("Board: 'fields' must not be empty.".into());
+        }
+        // Check for duplicate IDs
+        let mut ids = std::collections::HashSet::new();
+        for field in &self.fields {
+            if !ids.insert(field.id) {
+                return Err(format!("Board: duplicate field id {}", field.id));
+            }
+        }
+        // Check that relations reference valid field ids
+        for &(a, b) in &self.relations {
+            if !ids.contains(&a) || !ids.contains(&b) {
+                return Err(format!(
+                    "Board: relation ({},{}) refers to unknown field id",
+                    a, b
+                ));
+            }
+        }
+        Ok(())
+    }
 }
